@@ -7,7 +7,14 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
+dotenv.config();
+connectDB();
+
+const app = express();
+
+// Temporary Seed route
 app.get("/api/seed", async (req, res) => {
   const User = (await import("./models/User.js")).default;
   const Product = (await import("./models/Product.js")).default;
@@ -16,13 +23,6 @@ app.get("/api/seed", async (req, res) => {
   await User.create({ name:"Admin", email:"admin@karavan.com", password:"admin123", isAdmin:true });
   res.json({ message: "Seeded!" });
 });
-
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
-
-dotenv.config();
-connectDB();
-
-const app = express();
 
 app.use(cors({ origin: process.env.CLIENT_URL || "*", credentials: true }));
 app.use(express.json());
