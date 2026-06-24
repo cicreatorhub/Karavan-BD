@@ -7,6 +7,16 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
+
+app.get("/api/seed", async (req, res) => {
+  const User = (await import("./models/User.js")).default;
+  const Product = (await import("./models/Product.js")).default;
+  await User.deleteMany();
+  await Product.deleteMany();
+  await User.create({ name:"Admin", email:"admin@karavan.com", password:"admin123", isAdmin:true });
+  res.json({ message: "Seeded!" });
+});
+
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 dotenv.config();
