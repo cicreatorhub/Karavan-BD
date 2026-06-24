@@ -14,16 +14,6 @@ connectDB();
 
 const app = express();
 
-// Temporary Seed route
-app.get("/api/seed", async (req, res) => {
-  const User = (await import("./models/User.js")).default;
-  const Product = (await import("./models/Product.js")).default;
-  await User.deleteMany();
-  await Product.deleteMany();
-  await User.create({ name:"Admin", email:"admin@karavan.com", password:"admin123", isAdmin:true });
-  res.json({ message: "Seeded!" });
-});
-
 app.use(cors({ origin: process.env.CLIENT_URL || "*", credentials: true }));
 app.use(express.json());
 if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
